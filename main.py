@@ -45,7 +45,7 @@ class Budget:
             "Remaining Budget" :remaining_budget
         }
 
-     def visualize(self):
+    def visualize(self):
         budget_data = self.calculate_split()
         remaining_budget = budget_data["Remaining Budget"]
     
