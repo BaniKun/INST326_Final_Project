@@ -58,3 +58,14 @@ class Budget:
         plt.pie(percentages, labels=categories, colors=colors)
         plt.title("Budget Allocation")
         plt.show()
+
+budget = Budget(2000)
+budget.add_category("Rent", 40)
+budget.add_category("Food", 20)
+budget.set_fixed_expense("Insurance", 300)
+budget.set_fixed_expense("Subscriptions", 100)
+
+budget_summary = budget.calculate_split()
+print(budget_summary)
+
+budget.visualize()
