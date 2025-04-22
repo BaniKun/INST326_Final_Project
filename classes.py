@@ -38,6 +38,25 @@ class Budget_Calendar:
             Adds the Expenditure object into the list which is the value for corresponding Date key in the self.calendar dictionary
         """
         self.calendar[date].append(spending)
+
+    def add_fixed_expenditure(self, date, spending, pays_every):
+        """Adds an reoccurring Expenditure object to corresponding dates
+
+        Args:
+            date (Date object): Date the expense was first made
+            spending (Expenditure object): The expenditure that was made
+            pays_every (String): String that tells how often the expenditure occurs
+        
+        Side Effect:
+            Adds the Expenditure object into the list which is the value for corresponding Date keys in the self.calendar dictionary
+        """
+        if pays_every == "yearly": # Yearly Payment
+            self.add_expenditure(date, spending)
+        else: # Monthly Payment
+            for new_month in range(date.month, 13): # Adds payment to same day of every month starting from the passed in date
+                new_date = date.replace(month = new_month)
+                self.add_expenditure(new_date, spending)
+
     
     def get_daily_spending_amount(self, date):
         """Calculates total amount of money spent on particular date
@@ -182,3 +201,11 @@ if __name__ == "__main__":
     print(myBudget_Calendar.get_daily_spending_amount(dt.date(2025,4,22)))
     print(myBudget_Calendar.get_daily_spending_amount(dt.date(2025,4,23)))
     print(myBudget_Calendar.get_total_spending_amount_between_two_dates(dt.date(2025,4,22), dt.date(2025,4,23)))
+    print(dt.date(2025,4,23).month)
+    for i in range(4, 12):
+        print(i)
+    myBudget_Calendar.add_fixed_expenditure(dt.date(2025,4,25), Expenditure("Spotify", 9.99, "Fixed", "Music"), "monthly")
+    print(myBudget_Calendar.get_daily_spending_amount(dt.date(2025,4,25)))
+    print(myBudget_Calendar.get_daily_spending_amount(dt.date(2025,5,25)))
+    print(myBudget_Calendar.get_daily_spending_amount(dt.date(2025,12,25)))
+    print(myBudget_Calendar.get_total_spending_amount_between_two_dates(dt.date(2025,4,25), dt.date(2025,5,25)))
