@@ -1,18 +1,44 @@
-import calendar
+import calendar as cl
 import datetime as dt
 import math
 
 def truncate_to_hundredths(number):
   return math.floor(number * 100) / 100
 
+class Budget_Calendar:
+    def __init__(self, year):
+        cal = cl.Calendar()
+        yearly_calendar = {}
+        for month in range(1, 13):
+            for day in cal.itermonthdates(year, month):
+                if day.year == year:
+                    yearly_calendar[day] = []
+
+        self.calendar = yearly_calendar
+    
+    def add_expenditure(self, date, spending):
+        self.yearly_calendar[date].append(spending)
+    
+    def get_daily_spending_amount(self, date):
+        total_spent = 0
+
+        for spending in self.yearly_calendar[date]:
+            total_spent += spending.amount
+        
+        return total_spent
+    
+    def get_total_spending_amount_between_two_dates(self, starting_date, end_date):
+        current_date = starting_date
+        total_spent = 0
+        while current_date <= end_date:
+            total_spent += self.get_daily_spending_amount(current_date)
+            current_date += dt.timedelta(days=1)
+        
+        return total_spent
+
+
 class Budget_recommendation:
-    """The Budget class manages a budget with fixed expenses and spending categories."""
     def __init__(self, income, occurrence, month, year):
-        """Initializes the budget with available funds and empty expense categories
-        Args: 
-            income (float): Incoming amount of funds in dollars
-            occurrance (String): How often the user receives income. i.e. daily / weekly / yearly
-        """
         
         self.occurrence = occurrence
         self.income = income
@@ -71,23 +97,7 @@ class Budget_recommendation:
             else:
                 self.monthly_budget = self.income * 28
             
-            self.daily_budget = self.income
-    
-    
-            
-class Budget:
-    def __init__(self, fund, date1, date2):
-        self.total_fund = fund
-        self.start_date = date1
-        self.end_date = date2
-    
-    def calculate_daily_budget(self):
-        days_between = (self.end_date - self.start_date).days + 1
-        
-        return self.total_fund / days_between
-        
-        
-    
+            self.daily_budget = self.income  
     
 class Expenditure:
     """Class for all expenditure of the user
@@ -108,12 +118,21 @@ class Expenditure:
     
     def __repr__(self):
         return f"Date: {self.date}\n{self.description}\nAmount: {self.amount}$\nType: {self.type}\nCategory: {self.category}"
+
+def calculate_daily_budget(fund, start_date, end_date):
+    days_between = (end_date - start_date).days + 1
+    
+    return fund / days_between
+
     
 myBudget_recommendation = Budget_recommendation(1200, "monthly", 2, 2025)
 print(myBudget_recommendation)
 
-myExpenditure = Expenditure("Spotify", 9.99, "Fixed", "Music", dt.date(2025, 4, 22))
-print(myExpenditure)
+myExpenditure1 = Expenditure("Spotify", 9.99, "Fixed", "Music", dt.date(2025, 4, 22))
+myExpenditure2 = Expenditure("Spotify", 9.99, "Fixed", "Music", dt.date(2025, 4, 23))
+print(myExpenditure1)
+print([myExpenditure1, myExpenditure2])
 
-myBudget = Budget(1200, dt.date(2025, 4, 1), dt.date(2025, 4, 30))
-print(myBudget.calculate_daily_budget())
+
+myBudget = calculate_daily_budget(1200, dt.date(2025, 4, 1), dt.date(2025, 4, 30))
+print(myBudget)
