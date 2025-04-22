@@ -1,72 +1,83 @@
-import matplotlib.pyplot as plt
+import calendar
+import datetime
 
 class Budget:
     """The Budget class manages a budget with fixed expenses and spending categories."""
-    def __init__(self, available_funds):
+    def __init__(self, income, occurrance, year, month):
         """Initializes the budget with available funds and empty expense categories
         Args: 
-        - available_funds: the total funds available for the budgeting plan."""
+            income (float): Incoming amount of funds in dollars
+            occurrance (String): How often the user receives income. i.e. daily / weekly / yearly
+        """
         
-        self.available_funds = available_funds
-        self.fixed_expenses = {} #saves fixed cost items, name:cost
-        self.spend_categories = {} #saves specific spend categories, category:percentage
+        self.occurance = occurrance
+        self.available_funds = income
+        self.daily_budget = 0
+        self.monthly_budget = 0
+        self.yearly_budget = 0
+        self.year = year
+        self.month = month
     
-    def add_category(self, name, percentage):
-        """Adds a spending category with an allocated percentage
-        Args: 
-        - name: name of the category
-        - percentage: percentage of the remaining budget allocated to that category
-        Raises:
-        - ValueError: if the percentage is not between 0 and 100."""
+    def set_recommended_budget(self):
+        if self.occurrance.casefold() == "Yearly".casefold():
+            self.yearly_budget = self.income
+
+            self.monthly_budget = self.income / 12
+
+            if self.leap_year:
+                self.daily_budget = self.income / 366
+            else:
+                self.daily_budget = self.income / 365
+
+        elif self.occurrance.casefold() == "Monthly".casefold():
+            self.yearly_budget = self.income * 12
+
+            self.monthly_budget = self.income
+
+            if self.month == 1 | 3 | 5 | 7 | 8 | 10 | 12:
+                self.daily_budget = self.income / 31
+            elif self.month != 2:
+                self.daily_budget = self.income / 30
+            elif self.leap_year:
+                self.daily_budget = self.income / 29
+            else:
+                self.daily_budget = self.income / 28
+
+        else:
+            if self.leap_year:
+                self.yearly_budget = self.income * 366
+            else:
+                self.yearly_budget = self.income * 365
+            
+            if self.month == 1 | 3 | 5 | 7 | 8 | 10 | 12:
+                self.monthly_budget = self.income * 31
+            elif self.month != 2:
+                self.monthly_budget = self.income * 30
+            elif self.leap_year:
+                self.monthly_budget = self.income * 29
+            else:
+                self.monthly_budget = self.income * 28
+            
+
         
-        if percentage < 0 or percentage > 100:
-            raise ValueError("Percentage must be between 0 and 100.")
-        self.spend_categories[name] = percentage
-
-    def set_fixed_expense(self, name, amount):
-        if amount < 0:
-            raise ValueError("Expense must be positive.")
-        self.fixed_expenses[name] = amount
-
-    def calculate_split(self):
-        allocated_funds = sum(self.fixed_expenses.values())
-        remaining_budget = self.available_funds - allocated_funds
-
-        if remaining_budget < 0:
-            raise ValueError("Expenses exceed total available funds!")
-        budget_splits = {
-            name: (percentage / 100) * remaining_budget
-            for name, percentage in self.spend_categories.items()
-        }
-
-        return {
-            "Fixed Expenses":self.fixed_expenses,
-            "Spend Category Allocations" :budget_splits,
-            "Remaining Budget" :remaining_budget
-        }
-
-    def visualize(self):
-        budget_data = self.calculate_split()
-        remaining_budget = budget_data["Remaining Budget"]
     
-        categories = list(self.spend_categories.keys())  + list(self.fixed_expenses.keys()) + ["Remaining Budget"]
-        percentages = list(self.spend_categories.values()) + list(self.fixed_expenses.values()) + [remaining_budget]
-
-        plt.figure(figsize=(8,8))
-        colors = ['#9A133DFF', '#B93961FF', '#D8527CFF', '#F28AAAFF', '#F9B4C9FF', '#F9E0E8FF', '#FFFFFFFF', '#EAF3FFFF', '#C5DAF6FF', '#A1C2EDFF', '#6996E3FF', '#4060C8FF', '#1A318BFF']
-        #color palette from: https://python-graph-gallery.com/color-palette-finder/
-        plt.pie(percentages, labels=categories, colors=colors)
-        plt.title("Budget Allocation")
-        plt.show()
-
-if __name__ == "__main__":
-    budget = Budget(2000)
-    budget.add_category("Rent", 40)
-    budget.add_category("Food", 20)
-    budget.set_fixed_expense("Insurance", 300)
-    budget.set_fixed_expense("Subscriptions", 100)
     
-    budget_summary = budget.calculate_split()
-    print(budget_summary)
+class Expenditure:
+    """Class for all expenditure of the user
+
+    Attributes:
+        description (String): Description of the expenditure. i.e. Spotify membership, Car insurance, etc.
+        amount (float): Amount of the expenditure in dollars
+        type (String): Whether if it is a fixed expenditure or not
+        category (String): What category the expenditure is for. i.e. Leisure, food, hobby, etc.
+        date (String): Day it was made in the format of month/day/year
+    """
+    def __init__(self, description, amount, type, category, day, month, year):
+        self.description = description
+        self.amount = amount
+        self.type = type
+        self.category = category
+        self.date = f"{month}/{day}/{year}"
     
-    budget.visualize()
+    def __repr__(self):
+        return f"Date: {self.date}\n{self.description}\nAmount: {self.amount} $\nType: {self.type}\nCategory: {self.category}"
