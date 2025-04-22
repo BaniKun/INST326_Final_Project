@@ -3,7 +3,7 @@ import datetime
 
 class Budget:
     """The Budget class manages a budget with fixed expenses and spending categories."""
-    def __init__(self, income, occurrance, year, month):
+    def __init__(self, income, occurrance, month, year):
         """Initializes the budget with available funds and empty expense categories
         Args: 
             income (float): Incoming amount of funds in dollars
@@ -11,13 +11,15 @@ class Budget:
         """
         
         self.occurance = occurrance
-        self.available_funds = income
+        self.income = income
         self.daily_budget = 0
         self.monthly_budget = 0
         self.yearly_budget = 0
         self.year = year
         self.month = month
-    
+
+        self.set_recommended_budget()
+
     def set_recommended_budget(self):
         if self.occurrance.casefold() == "Yearly".casefold():
             self.yearly_budget = self.income
@@ -58,6 +60,10 @@ class Budget:
             else:
                 self.monthly_budget = self.income * 28
             
+            self.daily_budget = self.income
+    
+    
+            
 
         
     
@@ -81,3 +87,5 @@ class Expenditure:
     
     def __repr__(self):
         return f"Date: {self.date}\n{self.description}\nAmount: {self.amount} $\nType: {self.type}\nCategory: {self.category}"
+    
+    
