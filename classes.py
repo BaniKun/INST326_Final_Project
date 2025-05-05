@@ -40,7 +40,9 @@ class Budget_Calendar:
         Side Effect:
             Adds the Expenditure object into the list which is the value for corresponding Date key in the self.expense_calendar dictionary
         """
+        
         self.expense_calendar[date].append(spending)
+
 
     def add_fixed_expenditure(self, date, spending, pays_every):
         """Adds an reoccurring Expenditure object to corresponding dates
@@ -154,7 +156,7 @@ class Budget_Calendar:
         current_date = starting_date
         total_gained = 0
         while current_date <= end_date:
-            total_spent += self.get_daily_income_amount(current_date)
+            total_gained += self.get_daily_income_amount(current_date)
             current_date += dt.timedelta(days=1)
         
         return total_gained 
@@ -167,7 +169,6 @@ class Expenditure:
         amount (float): Amount of the expenditure in dollars
         type (String): Whether if it is a fixed expenditure or not
         category (String): What category the expenditure is for. i.e. Leisure, food, hobby, etc.
-        date (String): Day it was made in the format of month/day/year
     """
     def __init__(self, description, amount, type, category):
         self.description = description
@@ -184,6 +185,13 @@ def calculate_daily_budget(fund, start_date, end_date):
     return fund / days_between
 
 class Income:
+    """Class for all income of the user
+
+    Attributes:
+        description (String): Description of the income. i.e. Pocket money, parttime job, etc
+        amount (float): Amount of the income in dollars
+        type (String): Whether if it is a fixed income or not
+    """
     def __init__(self, description, amount, type):
         self.description = description
         self.amount = amount
@@ -208,18 +216,28 @@ if __name__ == "__main__":
     """
 
     myBudget_Calendar = Budget_Calendar(2025)
+    print("Expenditure Test")
     myBudget_Calendar.add_expenditure(dt.date(2025,4,22), Expenditure("Spotify", 9.99, "Fixed", "Music"))
     myBudget_Calendar.add_expenditure(dt.date(2025,4,22), Expenditure("Spotify", 20.99, "Fixed", "Music"))
     myBudget_Calendar.add_expenditure(dt.date(2025,4,23), Expenditure("Spotify", 30.99, "Fixed", "Music"))
     print(myBudget_Calendar.get_daily_spending_amount(dt.date(2025,4,22)))
     print(myBudget_Calendar.get_daily_spending_amount(dt.date(2025,4,23)))
     print(myBudget_Calendar.get_total_spending_amount_between_two_dates(dt.date(2025,4,22), dt.date(2025,4,23)))
-    print(dt.date(2025,4,23).month)
-    for i in range(4, 12):
-        print(i)
     myBudget_Calendar.add_fixed_expenditure(dt.date(2025,4,25), Expenditure("Spotify", 9.99, "Fixed", "Music"), "monthly")
     print(myBudget_Calendar.get_daily_spending_amount(dt.date(2025,4,25)))
     print(myBudget_Calendar.get_daily_spending_amount(dt.date(2025,5,25)))
     print(myBudget_Calendar.get_daily_spending_amount(dt.date(2025,12,25)))
     print(myBudget_Calendar.get_total_spending_amount_between_two_dates(dt.date(2025,4,25), dt.date(2025,5,25)))
-    
+
+    print("Income Test")
+    myBudget_Calendar.add_income(dt.date(2025,4,22), Income("Pocket Money", 10.0, "Not Fixed"))
+    myBudget_Calendar.add_income(dt.date(2025,4,22), Income("Pocket Money", 20.0, "Not Fixed"))
+    myBudget_Calendar.add_income(dt.date(2025,4,23), Income("Pocket Money", 10.0, "Not Fixed"))
+    print(myBudget_Calendar.get_daily_income_amount(dt.date(2025,4,22)))
+    print(myBudget_Calendar.get_daily_income_amount(dt.date(2025,4,23)))
+    print(myBudget_Calendar.get_total_income_amount_between_two_dates(dt.date(2025,4,22), dt.date(2025,4,23)))
+    myBudget_Calendar.add_fixed_income(dt.date(2025,4,25), Income("Pocket Money", 10.0, "Fixed"), "monthly")
+    print(myBudget_Calendar.get_daily_income_amount(dt.date(2025,4,25)))
+    print(myBudget_Calendar.get_daily_income_amount(dt.date(2025,5,25)))
+    print(myBudget_Calendar.get_daily_income_amount(dt.date(2025,12,25)))
+    print(myBudget_Calendar.get_total_income_amount_between_two_dates(dt.date(2025,4,25), dt.date(2025,5,25)))
