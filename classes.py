@@ -2,6 +2,7 @@ import calendar as cl
 import datetime as dt
 import math
 import decimal
+import pickle
 
 def truncate_to_hundredths(number):
   return math.floor(number * 100) / 100
@@ -187,7 +188,7 @@ class Budget_Calendar:
         total = self.get_total_income_amount_between_two_dates(starting_date, end_date) - self.get_total_spending_amount_between_two_dates(starting_date, end_date)
         
         return total
-    
+
 class Expenditure:
     """Class for all expenditure of the user
 
@@ -250,6 +251,3 @@ if __name__ == "__main__":
     print(myBudget_Calendar.get_daily_income_amount(dt.date(2025,12,25)))
     print(myBudget_Calendar.get_total_income_amount_between_two_dates(dt.date(2025,4,25), dt.date(2025,5,25)))
 
-    print("Fund Test")
-    print(myBudget_Calendar.get_daily_change_in_fund(dt.date(2025,4,23)))
-    print(myBudget_Calendar.get_total_fund_left_between_two_dates(dt.date(2025,4,22), dt.date(2025,4,23)))
