@@ -161,6 +161,16 @@ class Budget_Calendar:
         
         return total_gained 
     
+    def get_daily_change_in_fund(self, date):
+        total_change = self.get_daily_income_amount(date) - self.get_daily_spending_amount(date)
+
+        return total_change
+
+    def get_total_fund_left_between_two_dates(self, starting_date, end_date):
+        total = self.get_total_income_amount_between_two_dates(starting_date, end_date) - self.get_total_spending_amount_between_two_dates(starting_date, end_date)
+        
+        return total
+    
 class Expenditure:
     """Class for all expenditure of the user
 
@@ -194,27 +204,13 @@ class Income:
     """
     def __init__(self, description, amount, type):
         self.description = description
-        self.amount = amount
+        self.amount = decimal.Decimal(str(amount))
         self.type = type
     
     def __repr__(self):
         return f"{self.description}\nAmount: {self.amount}$\nType: {self.type}"
 
 if __name__ == "__main__":
-    """
-    myBudget_recommendation = Budget_recommendation(1200, "monthly", 2, 2025)
-    print(myBudget_recommendation)
-
-    myExpenditure1 = Expenditure("Spotify", 9.99, "Fixed", "Music", dt.date(2025, 4, 22))
-    myExpenditure2 = Expenditure("Spotify", 9.99, "Fixed", "Music", dt.date(2025, 4, 23))
-    print(myExpenditure1)
-    print([myExpenditure1, myExpenditure2])
-
-
-    myBudget = calculate_daily_budget(1200, dt.date(2025, 4, 1), dt.date(2025, 4, 30))
-    print(myBudget)
-    """
-
     myBudget_Calendar = Budget_Calendar(2025)
     print("Expenditure Test")
     myBudget_Calendar.add_expenditure(dt.date(2025,4,22), Expenditure("Spotify", 9.99, "Fixed", "Music"))
@@ -231,7 +227,7 @@ if __name__ == "__main__":
 
     print("Income Test")
     myBudget_Calendar.add_income(dt.date(2025,4,22), Income("Pocket Money", 10.0, "Not Fixed"))
-    myBudget_Calendar.add_income(dt.date(2025,4,22), Income("Pocket Money", 20.0, "Not Fixed"))
+    myBudget_Calendar.add_income(dt.date(2025,4,22), Income("Pocket Money", 100.0, "Not Fixed"))
     myBudget_Calendar.add_income(dt.date(2025,4,23), Income("Pocket Money", 10.0, "Not Fixed"))
     print(myBudget_Calendar.get_daily_income_amount(dt.date(2025,4,22)))
     print(myBudget_Calendar.get_daily_income_amount(dt.date(2025,4,23)))
@@ -241,3 +237,7 @@ if __name__ == "__main__":
     print(myBudget_Calendar.get_daily_income_amount(dt.date(2025,5,25)))
     print(myBudget_Calendar.get_daily_income_amount(dt.date(2025,12,25)))
     print(myBudget_Calendar.get_total_income_amount_between_two_dates(dt.date(2025,4,25), dt.date(2025,5,25)))
+
+    print("Fund Test")
+    print(myBudget_Calendar.get_daily_change_in_fund(dt.date(2025,4,23)))
+    print(myBudget_Calendar.get_total_fund_left_between_two_dates(dt.date(2025,4,22), dt.date(2025,4,23)))
