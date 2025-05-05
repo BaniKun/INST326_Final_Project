@@ -51,19 +51,19 @@ class User_Interface:
             pickle.dump(self.calendar, file)
 
     def load_calendar(self):
-        self.print_line()
-
         wrong_input = True
         while wrong_input:
+            self.print_line()
             filename = input("Enter the filename of the calendar that you want to open: ")
-            if filename[-4:] != ".pkl":
-                print("Please enter the filename correctly.")
-            else:
+            try:
+                with open(filename, 'rb') as file:
+                    self.calendar = pickle.load(file)
+                print("Calendar loaded successfully.")
                 wrong_input = False
-                
-        with open(filename, 'rb') as file:
-            self.calendar = pickle.load(file)
-        print("Calendar loaded successfully.")
+            except:
+                print("Please enter the correct filename.")
+
+        
 
     def main_menu(self):
         """A method that prompts the main menu to the user
