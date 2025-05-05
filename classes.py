@@ -19,13 +19,16 @@ class Budget_Calendar:
             year (int): The year the calendar will be on
         """
         cal = cl.Calendar()
-        yearly_calendar = {}
+        yearly_expense_calendar = {}
+        yearly_income_calendar = {}
         for month in range(1, 13):
             for day in cal.itermonthdates(year, month):
                 if day.year == year:
-                    yearly_calendar[day] = []
+                    yearly_expense_calendar[day] = []
+                    yearly_income_calendar[day] = []
 
-        self.calendar = yearly_calendar
+        self.expense_calendar = yearly_expense_calendar
+        self.income_calendar = yearly_income_calendar
     
     def add_expenditure(self, date, spending):
         """Adds an Expenditure object to the corresponding date
@@ -35,9 +38,9 @@ class Budget_Calendar:
             spending (Expenditure object): The expenditure that was made
         
         Side Effect:
-            Adds the Expenditure object into the list which is the value for corresponding Date key in the self.calendar dictionary
+            Adds the Expenditure object into the list which is the value for corresponding Date key in the self.expense_calendar dictionary
         """
-        self.calendar[date].append(spending)
+        self.expense_calendar[date].append(spending)
 
     def add_fixed_expenditure(self, date, spending, pays_every):
         """Adds an reoccurring Expenditure object to corresponding dates
@@ -48,7 +51,7 @@ class Budget_Calendar:
             pays_every (String): String that tells how often the expenditure occurs
         
         Side Effect:
-            Adds the Expenditure object into the list which is the value for corresponding Date keys in the self.calendar dictionary
+            Adds the Expenditure object into the list which is the value for corresponding Date keys in the self.expense_calendar dictionary
         """
         if pays_every == "yearly": # Yearly Payment
             self.add_expenditure(date, spending)
@@ -69,7 +72,7 @@ class Budget_Calendar:
         """
         total_spent = 0
 
-        for spending in self.calendar[date]:
+        for spending in self.expense_calendar[date]:
             total_spent += spending.amount
         
         return total_spent
@@ -91,69 +94,70 @@ class Budget_Calendar:
             current_date += dt.timedelta(days=1)
         
         return total_spent
-
-
-class Budget_recommendation:
-    def __init__(self, income, occurrence, month, year):
-        
-        self.occurrence = occurrence
-        self.income = income
-        self.daily_budget = 0
-        self.monthly_budget = 0
-        self.yearly_budget = 0
-        self.year = year
-        self.month = month
-        if year % 4 == 0:
-            self.leap_year = True
-        else:
-            self.leap_year = False
-
-        self.set_recommended_budget()
     
-    def __repr__(self):
-        return f"{self.occurrence.capitalize()} income: {self.income}\nDaily Budget: {truncate_to_hundredths(self.daily_budget)}\nMonthly Budget: {self.monthly_budget}\nYearly Budget: {self.yearly_budget}"
+    def add_income(self, date, income):
+        """Adds an Income object to the corresponding date
 
-    def set_recommended_budget(self):
-        if self.occurrence.casefold() == "Yearly".casefold():
-            self.yearly_budget = self.income
+        Args:
+            date (Date object): Date the income was paid
+            income (Income object): The income that was paid
+        
+        Side Effect:
+            Adds the Income object into the list which is the value for corresponding Date key in the self.income_calendar dictionary
+        """
+        self.income_calendar[date].append(income)
+    
+    def add_fixed_income(self, date, income, paid_every):
+        """Adds an reoccurring Income object to corresponding dates
 
-            self.monthly_budget = self.income / 12
+        Args:
+            date (Date object): Date the income was first paid
+            income (Income object): The income that was paid
+            paid_every (String): String that tells how often the income occurs
+        
+        Side Effect:
+            Adds the Income object into the list which is the value for corresponding Date keys in the self.income_calendar dictionary
+        """
+        if paid_every == "yearly": # Yearly Income
+            self.add_income(date, income)
+        else: # Monthly Income
+            for new_month in range(date.month, 13): # Adds income to same day of every month starting from the passed in date
+                new_date = date.replace(month = new_month)
+                self.add_income(new_date, income)
+    
+    def get_daily_income_amount(self, date):
+        """Calculates total amount of money gained on particular date
 
-            if self.leap_year:
-                self.daily_budget = self.income / 366
-            else:
-                self.daily_budget = self.income / 365
+        Args:
+            date (Date object): Date to get the total amount of money gained for
+        
+        Returns:
+            total_income (Decimal object): The total amount of money gained on the passed in date
+        """
+        total_income = 0
 
-        elif self.occurrence.casefold() == "Monthly".casefold():
-            self.yearly_budget = self.income * 12
+        for income in self.income_calendar[date]:
+            total_income += income.amount
+        
+        return total_income
+    
+    def get_total_income_amount_between_two_dates(self, starting_date, end_date):
+        """Calculates total amount of money gained between two particular dates
 
-            self.monthly_budget = self.income
+        Args:
+            starting_date (Date object): Starting date of the range in which to get the total income for
+            end_date (Date object): Ending date of the range in which to get the total income for
 
-            if self.month in [1, 3, 5, 7, 8, 10, 12]:
-                self.daily_budget = self.income / 31
-            elif self.month != 2:
-                self.daily_budget = self.income / 30
-            elif self.leap_year:
-                self.daily_budget = self.income / 29
-            else:
-                self.daily_budget = self.income / 28
-
-        else:
-            if self.leap_year:
-                self.yearly_budget = self.income * 366
-            else:
-                self.yearly_budget = self.income * 365
-            
-            if self.month == 1 | 3 | 5 | 7 | 8 | 10 | 12:
-                self.monthly_budget = self.income * 31
-            elif self.month != 2:
-                self.monthly_budget = self.income * 30
-            elif self.leap_year:
-                self.monthly_budget = self.income * 29
-            else:
-                self.monthly_budget = self.income * 28
-            
-            self.daily_budget = self.income  
+        Returns:
+            total_gained (Decimal object): The total amount of money gained during the two particular dates that were passed in
+        """
+        current_date = starting_date
+        total_gained = 0
+        while current_date <= end_date:
+            total_spent += self.get_daily_income_amount(current_date)
+            current_date += dt.timedelta(days=1)
+        
+        return total_gained 
     
 class Expenditure:
     """Class for all expenditure of the user
@@ -172,12 +176,21 @@ class Expenditure:
         self.category = category
     
     def __repr__(self):
-        return f"Date: {self.date}\n{self.description}\nAmount: {self.amount}$\nType: {self.type}\nCategory: {self.category}"
+        return f"{self.description}\nAmount: {self.amount}$\nType: {self.type}\nCategory: {self.category}"
 
 def calculate_daily_budget(fund, start_date, end_date):
     days_between = (end_date - start_date).days + 1
     
     return fund / days_between
+
+class Income:
+    def __init__(self, description, amount, type):
+        self.description = description
+        self.amount = amount
+        self.type = type
+    
+    def __repr__(self):
+        return f"{self.description}\nAmount: {self.amount}$\nType: {self.type}"
 
 if __name__ == "__main__":
     """
@@ -209,3 +222,4 @@ if __name__ == "__main__":
     print(myBudget_Calendar.get_daily_spending_amount(dt.date(2025,5,25)))
     print(myBudget_Calendar.get_daily_spending_amount(dt.date(2025,12,25)))
     print(myBudget_Calendar.get_total_spending_amount_between_two_dates(dt.date(2025,4,25), dt.date(2025,5,25)))
+    
