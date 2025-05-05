@@ -93,7 +93,21 @@ class User_Interface:
     
     def add_income_prompt(self):
         self.print_line()
-        print("This is the income prompt")
+        wrong_input = True
+        while wrong_input:
+            print("Would you like to add a single expense or a fixed expense? (single/fixed)")
+            user_input = input()
+            if user_input.casefold() == "single".casefold():
+                description = input("Describe your expense. (i.e. Mcdonalds)\n")
+                wrong_date_input = True
+                while wrong_date_input:
+                    date_input = input("When was this expense made?(Input in MM/DD/YYY format)\n")
+                amount = input("How much did you spend?\n")
+                expense_type = "not fixed"
+                category = input("What category does it fall into? (i.e. Food, Hobby, etc)\n")
+                new_expense = classes.Expenditure(description, amount, expense_type, category)
+
+                self.calendar.add_expenditure()
 
     def add_expense_prompt(self):
         self.print_line()

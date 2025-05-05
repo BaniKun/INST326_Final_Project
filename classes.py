@@ -188,7 +188,8 @@ class Budget_Calendar:
         total = self.get_total_income_amount_between_two_dates(starting_date, end_date) - self.get_total_spending_amount_between_two_dates(starting_date, end_date)
         
         return total
-    
+
+# Test functions for saveing and loading
 def save_calendar(calendar):
     filename = input("Enter the filename you want to save your calendar as: ")
     filename += ".pkl"
