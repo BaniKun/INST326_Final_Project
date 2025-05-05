@@ -1,6 +1,7 @@
 # File for main function to run the app
 import classes
 import pickle
+import datetime as dt
 
 class User_Interface:
     def __init__(self):
@@ -39,7 +40,7 @@ class User_Interface:
         """A method that prints out a dash line
 
         Side Effect:
-            Prints out a line with 60 dashes
+            Prints out a line with 60 dashes :')
         """
         print("------------------------------------------------------------")        
     
@@ -101,13 +102,19 @@ class User_Interface:
                 description = input("Describe your expense. (i.e. Mcdonalds)\n")
                 wrong_date_input = True
                 while wrong_date_input:
-                    date_input = input("When was this expense made?(Input in MM/DD/YYY format)\n")
+                    try:
+                        date_input = input("When was this expense made?(Input in MM/DD/YYY format)\n")
+                        date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[1]), int(date_input.split("/")[1]))
+                        wrong_date_input = False
+                    except:
+                        print("Please input the date correctly.")
                 amount = input("How much did you spend?\n")
                 expense_type = "not fixed"
                 category = input("What category does it fall into? (i.e. Food, Hobby, etc)\n")
-                new_expense = classes.Expenditure(description, amount, expense_type, category)
 
-                self.calendar.add_expenditure()
+                new_expense = classes.Expenditure(description, amount, expense_type, category)
+                
+                self.calendar.add_expenditure(date, new_expense)
 
     def add_expense_prompt(self):
         self.print_line()
