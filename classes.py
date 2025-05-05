@@ -162,11 +162,28 @@ class Budget_Calendar:
         return total_gained 
     
     def get_daily_change_in_fund(self, date):
+        """Calculates total change in fund on particular date
+
+        Args:
+            date (Date object): Date that the changes will be calculated for
+
+        Returns:
+            total_change (Decimal Object): Total change occurred on amount of fund on that date
+        """
         total_change = self.get_daily_income_amount(date) - self.get_daily_spending_amount(date)
 
         return total_change
 
     def get_total_fund_left_between_two_dates(self, starting_date, end_date):
+        """Calculates total amount of change in fund between two particular dates
+
+        Args:
+            starting_date (Date object): Starting date of the range in which to get the total change for
+            end_date (Date object): Ending date of the range in which to get the total change for
+
+        Returns:
+            total (Decimal object): The total amount of change in funds during the two particular dates that were passed in
+        """
         total = self.get_total_income_amount_between_two_dates(starting_date, end_date) - self.get_total_spending_amount_between_two_dates(starting_date, end_date)
         
         return total
@@ -188,11 +205,6 @@ class Expenditure:
     
     def __repr__(self):
         return f"{self.description}\nAmount: {self.amount}$\nType: {self.type}\nCategory: {self.category}"
-
-def calculate_daily_budget(fund, start_date, end_date):
-    days_between = (end_date - start_date).days + 1
-    
-    return fund / days_between
 
 class Income:
     """Class for all income of the user
