@@ -56,7 +56,7 @@ class Budget_Calendar:
         Side Effect:
             Adds the Expenditure object into the list which is the value for corresponding Date keys in the self.expense_calendar dictionary
         """
-        if pays_every == "yearly": # Yearly Payment
+        if pays_every.casefold() == "yearly".casefold(): # Yearly Payment
             self.add_expenditure(date, spending)
         else: # Monthly Payment
             for new_month in range(date.month, 13): # Adds payment to same day of every month starting from the passed in date
@@ -121,7 +121,7 @@ class Budget_Calendar:
         Side Effect:
             Adds the Income object into the list which is the value for corresponding Date keys in the self.income_calendar dictionary
         """
-        if paid_every == "yearly": # Yearly Income
+        if paid_every.casefold() == "yearly".casefold(): # Yearly Income
             self.add_income(date, income)
         else: # Monthly Income
             for new_month in range(date.month, 13): # Adds income to same day of every month starting from the passed in date

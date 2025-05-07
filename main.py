@@ -92,7 +92,7 @@ class User_Interface:
                 print("Please enter correctly.")
 
     
-    def add_income_prompt(self):
+    def add_expense_prompt(self):
         self.print_line()
         wrong_input = True
         while wrong_input:
@@ -113,12 +113,80 @@ class User_Interface:
                 category = input("What category does it fall into? (i.e. Food, Hobby, etc)\n")
 
                 new_expense = classes.Expenditure(description, amount, expense_type, category)
-                
-                self.calendar.add_expenditure(date, new_expense)
 
-    def add_expense_prompt(self):
+                self.calendar.add_expenditure(date, new_expense)
+            
+            elif user_input.casefold() == "fixed".casefold():
+                description = input("Describe your expense. (i.e. Mcdonalds)\n")
+                wrong_date_input = True
+                while wrong_date_input:
+                    try:
+                        date_input = input("When was this expense made for the first time? (Input in MM/DD/YYY format)\n")
+                        date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[1]), int(date_input.split("/")[1]))
+                        wrong_date_input = False
+                    except:
+                        print("Please input the date correctly.")
+                amount = input("How much is each payment?\n")
+                wrong_frequence_input = True
+                while wrong_frequence_input:
+                    frequence = input("How often do you make this payment? (monthly/yearly)\n")
+                    if frequence.casefold() == "yearly".casefold() or "monthly".casefold():
+                        expense_type = frequence
+                        wrong_frequence_input = False
+                    else:
+                        print("Please input the frequence correctly.")
+                category = input("What category does it fall into? (i.e. Food, Hobby, etc)\n")
+
+                new_expense = classes.Expenditure(description, amount, expense_type, category)
+
+                self.calendar.add_fixed_expenditure(date, new_expense)
+
+    def add_income_prompt(self):
         self.print_line()
-        print("This is the expense prompt")
+        wrong_input = True
+        while wrong_input:
+            print("Would you like to add a single income or a fixed income? (single/fixed)")
+            user_input = input()
+            if user_input.casefold() == "single".casefold():
+                description = input("Describe your income. (i.e. Allowance)\n")
+                wrong_date_input = True
+                while wrong_date_input:
+                    try:
+                        date_input = input("When was this income paid? (Input in MM/DD/YYY format)\n")
+                        date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[1]), int(date_input.split("/")[1]))
+                        wrong_date_input = False
+                    except:
+                        print("Please input the date correctly.")
+                amount = input("How much did you gain?\n")
+                income_type = "not fixed"
+
+                new_income = classes.Income(description, amount, income_type)
+
+                self.calendar.add_income(date, new_income)
+            
+            elif user_input.casefold() == "fixed".casefold():
+                description = input("Describe your income. (i.e. Allowance)\n")
+                wrong_date_input = True
+                while wrong_date_input:
+                    try:
+                        date_input = input("When was this income paid for the first time?(Input in MM/DD/YYY format)\n")
+                        date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[1]), int(date_input.split("/")[1]))
+                        wrong_date_input = False
+                    except:
+                        print("Please input the date correctly.")
+                amount = input("How much is each payment?\n")
+                wrong_frequence_input = True
+                while wrong_frequence_input:
+                    frequence = input("How often do you get paid this payment? (monthly/yearly)\n")
+                    if frequence.casefold() == "yearly".casefold() or "monthly".casefold():
+                        income_type = frequence
+                        wrong_frequence_input = False
+                    else:
+                        print("Please input the frequence correctly.")
+
+                new_income = classes.Income(description, amount, income_type)
+
+                self.calendar.add_fixed_income(date, new_income)
 
     def calculate_prompt(self):
         self.print_line()
