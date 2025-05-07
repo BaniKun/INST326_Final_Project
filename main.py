@@ -76,7 +76,7 @@ class User_Interface:
 
         while wrong_input:
             self.print_line()
-            print("What would you like to do?\n - Add Income\n - Add Expense\n - Calculate Funds\n - Save Calendar\n - Quit")
+            print("What would you like to do?\n - Add Income\n - Add Expense\n - Calculate\n - Check\n - Save Calendar\n - Quit")
             user_input = input()
             if user_input.casefold() == "Add Income".casefold(): # If the user chooses to add income to the calendar
                 self.add_income_prompt()
@@ -84,8 +84,11 @@ class User_Interface:
             elif user_input.casefold() == "Add Expense".casefold(): # If the user chooses to add expense to the calendar
                 self.add_expense_prompt()
                 wrong_input = False
-            elif user_input.casefold() == "Calculate Funds".casefold(): # If the user chooses to calculate funds on the calendar
+            elif user_input.casefold() == "Calculate".casefold(): # If the user chooses to calculate funds on the calendar
                 self.calculate_prompt()
+                wrong_input = False
+            elif user_input.casefold() == "Check".casefold(): # If the user chooses to calculate funds on the calendar
+                self.check_prompt()
                 wrong_input = False
             elif user_input.casefold() == "Save Calendar".casefold(): # If the user chooses to calculate funds on the calendar
                 self.save_calendar()
@@ -163,6 +166,8 @@ class User_Interface:
                     wrong_input = False
                 else:
                     print("Please type either yes or no.")
+        
+        self.main_menu()
 
 
     def add_income_prompt(self):
@@ -229,10 +234,16 @@ class User_Interface:
                     wrong_input = False
                 else:
                     print("Please type either yes or no.")
+        
+        self.main_menu()
 
     def calculate_prompt(self):
         self.print_line()
         print("This is the calculate prompt")
+    
+    def check_prompt(self):
+        self.print_line()
+        print("This is the check prompt")
 
 
 
