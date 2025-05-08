@@ -87,13 +87,13 @@ class User_Interface:
             elif user_input.casefold() == "Calculate".casefold(): # If the user chooses to calculate funds on the calendar
                 self.calculate_prompt()
                 wrong_input = False
-            elif user_input.casefold() == "Check".casefold(): # If the user chooses to calculate funds on the calendar
+            elif user_input.casefold() == "Check".casefold(): # If the user chooses to check funds on the calendar
                 self.check_prompt()
                 wrong_input = False
-            elif user_input.casefold() == "Save Calendar".casefold(): # If the user chooses to calculate funds on the calendar
+            elif user_input.casefold() == "Save Calendar".casefold(): # If the user chooses to save the calendar
                 self.save_calendar()
                 wrong_input = False
-            elif user_input.casefold() == "Quit".casefold(): # If the user chooses to calculate funds on the calendar
+            elif user_input.casefold() == "Quit".casefold(): # If the user chooses to quit the program
                 quit()
             else: # If the user input does not match any of the options
                 self.print_line()
@@ -239,7 +239,21 @@ class User_Interface:
 
     def calculate_prompt(self):
         self.print_line()
-        print("This is the calculate prompt")
+        wrong_input = True
+
+        while wrong_input:
+            self.print_line()
+            print("What would you like to do?\n - ")
+            user_input = input()
+            if user_input.casefold() == "Add Income".casefold(): 
+                self.add_income_prompt()
+                wrong_input = False
+            elif user_input.casefold() == "Add Expense".casefold(): 
+                self.add_expense_prompt()
+                wrong_input = False
+            else: # If the user input does not match any of the options
+                self.print_line()
+                print("Please enter correctly.")
     
     def check_prompt(self):
         self.print_line()
