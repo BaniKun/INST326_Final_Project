@@ -132,7 +132,7 @@ class User_Interface:
                     wrong_date_input = True
                     while wrong_date_input:
                         try:
-                            date_input = input("When was this expense made for the first time? (Input in MM/DD/YYY format)\n")
+                            date_input = input("When was this expense made for the first time? (Input in MM/DD/YYYY format)\n")
                             date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
                             wrong_date_input = False
                         except:
@@ -183,7 +183,7 @@ class User_Interface:
                     wrong_date_input = True
                     while wrong_date_input:
                         try:
-                            date_input = input("When was this income paid? (Input in MM/DD/YYY format)\n")
+                            date_input = input("When was this income paid? (Input in MM/DD/YYYY format)\n")
                             date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
                             wrong_date_input = False
                         except:
@@ -201,7 +201,7 @@ class User_Interface:
                     wrong_date_input = True
                     while wrong_date_input:
                         try:
-                            date_input = input("When was this income paid for the first time?(Input in MM/DD/YYY format)\n")
+                            date_input = input("When was this income paid for the first time?(Input in MM/DD/YYYY format)\n")
                             date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
                             wrong_date_input = False
                         except:
@@ -244,7 +244,7 @@ class User_Interface:
             wrong_date_input = True
             while wrong_date_input:
                 try:
-                    date_input = input("What is the starting date you want to calculate recommended daily budget for?\n")
+                    date_input = input("What is the starting date you want to calculate recommended daily budget for? (Input in MM/DD/YYYY format)\n")
                     start_date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
                     wrong_date_input = False
                 except:
@@ -253,7 +253,7 @@ class User_Interface:
             wrong_date_input = True
             while wrong_date_input:
                 try:
-                    date_input = input("What is the ending date you want to calculate recommended daily budget for?\n")
+                    date_input = input("What is the ending date you want to calculate recommended daily budget for?(Input in MM/DD/YYYY format)\n")
                     end_date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
                     wrong_date_input = False
                 except:
@@ -275,7 +275,9 @@ class User_Interface:
                 elif one_more.casefold() == "Yes".casefold():
                     wrong_input = False
                 else:
-                    print("Please type either yes or no.")     
+                    print("Please type either yes or no.")  
+
+        self.main_menu()   
     
     def check_prompt(self):
         self.print_line()
@@ -300,7 +302,7 @@ class User_Interface:
                             wrong_date_input = True
                             while wrong_date_input:
                                 try:
-                                    date_input = input("What date do you wish to check total expense for?\n")
+                                    date_input = input("What date do you wish to check total expense for? (Input in MM/DD/YYYY format)\n")
                                     check_date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
                                     wrong_date_input = False
                                 except:
@@ -316,7 +318,7 @@ class User_Interface:
                             wrong_date_input = True
                             while wrong_date_input:
                                 try:
-                                    date_input = input("What is the starting date you want to check total expense for?\n")
+                                    date_input = input("What is the starting date you want to check total expense for? (Input in MM/DD/YYYY format)\n")
                                     start_date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
                                     wrong_date_input = False
                                 except:
@@ -325,7 +327,7 @@ class User_Interface:
                             wrong_date_input = True
                             while wrong_date_input:
                                 try:
-                                    date_input = input("What is the ending date you want to check total expense for?\n")
+                                    date_input = input("What is the ending date you want to check total expense for? (Input in MM/DD/YYYY format)\n")
                                     end_date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
                                     wrong_date_input = False
                                 except:
@@ -352,7 +354,7 @@ class User_Interface:
                             wrong_date_input = True
                             while wrong_date_input:
                                 try:
-                                    date_input = input("What date do you with to check total income for?\n")
+                                    date_input = input("What date do you with to check total income for? (Input in MM/DD/YYYY format)\n")
                                     check_date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
                                     wrong_date_input = False
                                 except:
@@ -368,7 +370,7 @@ class User_Interface:
                             wrong_date_input = True
                             while wrong_date_input:
                                 try:
-                                    date_input = input("What is the starting date you want to check total income for?\n")
+                                    date_input = input("What is the starting date you want to check total income for? (Input in MM/DD/YYYY format)\n")
                                     start_date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
                                     wrong_date_input = False
                                 except:
@@ -377,7 +379,7 @@ class User_Interface:
                             wrong_date_input = True
                             while wrong_date_input:
                                 try:
-                                    date_input = input("What is the ending date you want to check total income for?\n")
+                                    date_input = input("What is the ending date you want to check total income for? (Input in MM/DD/YYYY format)\n")
                                     end_date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
                                     wrong_date_input = False
                                 except:
@@ -405,7 +407,7 @@ class User_Interface:
                             wrong_date_input = True
                             while wrong_date_input:
                                 try:
-                                    date_input = input("What date do you with to check total change in funds for?\n")
+                                    date_input = input("What date do you with to check total change in funds for? (Input in MM/DD/YYYY format)\n")
                                     check_date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
                                     wrong_date_input = False
                                 except:
@@ -421,7 +423,7 @@ class User_Interface:
                             wrong_date_input = True
                             while wrong_date_input:
                                 try:
-                                    date_input = input("What is the starting date you want to check total change in funds for?\n")
+                                    date_input = input("What is the starting date you want to check total change in funds for? (Input in MM/DD/YYYY format)\n")
                                     start_date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
                                     wrong_date_input = False
                                 except:
@@ -430,7 +432,7 @@ class User_Interface:
                             wrong_date_input = True
                             while wrong_date_input:
                                 try:
-                                    date_input = input("What is the ending date you want to check total change in funds for?\n")
+                                    date_input = input("What is the ending date you want to check total change in funds for? (Input in MM/DD/YYYY format)\n")
                                     end_date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
                                     wrong_date_input = False
                                 except:
@@ -459,6 +461,8 @@ class User_Interface:
                     wrong_input = False
                 else:
                     print("Please type either yes or no.") 
+        
+        self.main_menu()
 
 if __name__ == "__main__":
     launch = User_Interface()
