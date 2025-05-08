@@ -285,13 +285,111 @@ class User_Interface:
 
             while wrong_input:
                 self.print_line()
-                print("What would you like to do?\n - ")
+                print("What would you like to do?\n - Check Expense\n - Check Income\n - Check Change in Funds")
                 user_input = input()
-                if user_input.casefold() == "Add Income".casefold(): 
-                    self.add_income_prompt()
+                if user_input.casefold() == "check expense".casefold(): 
+                    self.print_line()
+
+                    wrong_second_input = True
+                    while wrong_second_input:
+                        print("Would you like to check expense on a single date or between two dates? (Single/Two Dates)")
+                        user_second_input = input()
+                        if user_second_input.casefold() == "Single".casefold():
+                            self.print_line()
+
+                            wrong_date_input = True
+                            while wrong_date_input:
+                                try:
+                                    date_input = input("What date do you wish to check total expense for?\n")
+                                    check_date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
+                                    wrong_date_input = False
+                                except:
+                                    print("Please input the date correctly.")
+                            
+                            total_spent = self.calendar.get_daily_spending_amount(check_date)
+                            print(f"On {check_date}, you've spent total of ${total_spent}.")
+
+                            wrong_second_input = False
+                        elif user_second_input.casefold() == "Two Dates".casefold():
+                            self.print_line()
+
+                            wrong_date_input = True
+                            while wrong_date_input:
+                                try:
+                                    date_input = input("What is the starting date you want to check total expense for?\n")
+                                    start_date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
+                                    wrong_date_input = False
+                                except:
+                                    print("Please input the date correctly.")
+
+                            wrong_date_input = True
+                            while wrong_date_input:
+                                try:
+                                    date_input = input("What is the ending date you want to check total expense for?\n")
+                                    end_date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
+                                    wrong_date_input = False
+                                except:
+                                    print("Please input the date correctly.")
+
+                            total_spent = self.calendar.get_total_spending_amount_between_two_dates(start_date, end_date)
+                            print(f"Your total spending between {start_date} and {end_date} is ${total_spent}.")
+
+                            wrong_second_input = False
+                        else:
+                            print("Please enter correctly.")
+
                     wrong_input = False
-                elif user_input.casefold() == "Add Expense".casefold(): 
-                    self.add_expense_prompt()
+                elif user_input.casefold() == "Check Income".casefold(): 
+                    self.print_line()
+
+                    wrong_second_input = True
+                    while wrong_second_input:
+                        print("Would you like to check income on a single date or between two dates? (Single/Two Dates)")
+                        user_second_input = input()
+                        if user_second_input.casefold() == "Single".casefold():
+                            self.print_line()
+
+                            wrong_date_input = True
+                            while wrong_date_input:
+                                try:
+                                    date_input = input("What date do you with to check total income for?\n")
+                                    check_date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
+                                    wrong_date_input = False
+                                except:
+                                    print("Please input the date correctly.")
+                            
+                            total_gained = self.calendar.get_daily_spending_amount(check_date)
+                            print(f"On {check_date}, you've gained total of ${total_gained}.")
+
+                            wrong_second_input = False
+                        elif user_second_input.casefold() == "Two Dates".casefold():
+                            self.print_line()
+
+                            wrong_date_input = True
+                            while wrong_date_input:
+                                try:
+                                    date_input = input("What is the starting date you want to check total income for?\n")
+                                    start_date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
+                                    wrong_date_input = False
+                                except:
+                                    print("Please input the date correctly.")
+
+                            wrong_date_input = True
+                            while wrong_date_input:
+                                try:
+                                    date_input = input("What is the ending date you want to check total income for?\n")
+                                    end_date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
+                                    wrong_date_input = False
+                                except:
+                                    print("Please input the date correctly.")
+
+                            total_gained = self.calendar.get_total_spending_amount_between_two_dates(start_date, end_date)
+                            print(f"Your total income between {start_date} and {end_date} is ${total_gained}.")
+
+                            wrong_second_input = False
+                        else:
+                            print("Please enter correctly.")
+
                     wrong_input = False
                 else: # If the user input does not match any of the options
                     self.print_line()
