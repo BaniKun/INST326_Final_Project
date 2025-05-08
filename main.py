@@ -101,9 +101,9 @@ class User_Interface:
 
     
     def add_expense_prompt(self):
-        self.print_line()
         additional_log = True
         while additional_log:
+            self.print_line()
             wrong_input = True
             while wrong_input:
                 print("Would you like to add a single expense or a fixed expense? (single/fixed)")
@@ -171,9 +171,9 @@ class User_Interface:
 
 
     def add_income_prompt(self):
-        self.print_line()
         additional_log = True
         while additional_log:
+            self.print_line()
             wrong_input = True
             while wrong_input:
                 print("Would you like to add a single income or a fixed income? (single/fixed)")
@@ -238,6 +238,46 @@ class User_Interface:
         self.main_menu()
 
     def calculate_prompt(self):
+        additional_log = True
+        while additional_log:
+            self.print_line()
+            wrong_date_input = True
+            while wrong_date_input:
+                try:
+                    date_input = input("What is the starting date you want to calculate recommended daily budget for?\n")
+                    start_date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
+                    wrong_date_input = False
+                except:
+                    print("Please input the date correctly.")
+
+            wrong_date_input = True
+            while wrong_date_input:
+                try:
+                    date_input = input("What is the ending date you want to calculate recommended daily budget for?\n")
+                    end_date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
+                    wrong_date_input = False
+                except:
+                    print("Please input the date correctly.")
+            
+            total_fund = self.calendar.get_total_fund_left_between_two_dates(dt.date(self.year,1,1), end_date)
+            num_of_days = abs((end_date - start_date).days) + 1
+            recommended_budget = self.calendar.get_recommended_daily_budget(start_date, end_date)
+
+            self.print_line()
+            print(f"Report\nDate: {start_date} ~ {end_date}\nToTal Fund Available: {total_fund}\nNumber of days between two dates: {num_of_days}\nRecommended Daily Budget: {recommended_budget}")
+
+            wrong_input = True
+            while wrong_input:
+                one_more = input("Would you like to add another expense? (Yes/No)\n")
+                if one_more.casefold() == "No".casefold():
+                    wrong_input = False
+                    additional_log = False
+                elif one_more.casefold() == "Yes".casefold():
+                    wrong_input = False
+                else:
+                    print("Please type either yes or no.")     
+    
+    def check_prompt(self):
         self.print_line()
         wrong_input = True
 
@@ -254,14 +294,6 @@ class User_Interface:
             else: # If the user input does not match any of the options
                 self.print_line()
                 print("Please enter correctly.")
-    
-    def check_prompt(self):
-        self.print_line()
-        print("This is the check prompt")
-
-
-
-
 
 if __name__ == "__main__":
     launch = User_Interface()
