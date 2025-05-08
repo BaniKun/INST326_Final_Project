@@ -358,7 +358,7 @@ class User_Interface:
                                 except:
                                     print("Please input the date correctly.")
                             
-                            total_gained = self.calendar.get_daily_spending_amount(check_date)
+                            total_gained = self.calendar.get_daily_income_amount(check_date)
                             print(f"On {check_date}, you've gained total of ${total_gained}.")
 
                             wrong_second_input = False
@@ -383,14 +383,68 @@ class User_Interface:
                                 except:
                                     print("Please input the date correctly.")
 
-                            total_gained = self.calendar.get_total_spending_amount_between_two_dates(start_date, end_date)
+                            total_gained = self.calendar.get_total_income_amount_between_two_dates(start_date, end_date)
                             print(f"Your total income between {start_date} and {end_date} is ${total_gained}.")
 
                             wrong_second_input = False
                         else:
                             print("Please enter correctly.")
-
+                    
                     wrong_input = False
+                
+                elif user_input.casefold() == "Check Total change in funds".casefold(): 
+                    self.print_line()
+
+                    wrong_second_input = True
+                    while wrong_second_input:
+                        print("Would you like to check total change in funds on a single date or between two dates? (Single/Two Dates)")
+                        user_second_input = input()
+                        if user_second_input.casefold() == "Single".casefold():
+                            self.print_line()
+
+                            wrong_date_input = True
+                            while wrong_date_input:
+                                try:
+                                    date_input = input("What date do you with to check total change in funds for?\n")
+                                    check_date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
+                                    wrong_date_input = False
+                                except:
+                                    print("Please input the date correctly.")
+                            
+                            total_change = self.calendar.get_daily_change_in_fund(check_date)
+                            print(f"On {check_date}, you've gained total of ${total_change}.")
+
+                            wrong_second_input = False
+                        elif user_second_input.casefold() == "Two Dates".casefold():
+                            self.print_line()
+
+                            wrong_date_input = True
+                            while wrong_date_input:
+                                try:
+                                    date_input = input("What is the starting date you want to check total change in funds for?\n")
+                                    start_date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
+                                    wrong_date_input = False
+                                except:
+                                    print("Please input the date correctly.")
+
+                            wrong_date_input = True
+                            while wrong_date_input:
+                                try:
+                                    date_input = input("What is the ending date you want to check total change in funds for?\n")
+                                    end_date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
+                                    wrong_date_input = False
+                                except:
+                                    print("Please input the date correctly.")
+
+                            total_change = self.calendar.get_total_fund_left_between_two_dates(start_date, end_date)
+                            print(f"Your total change in funds between {start_date} and {end_date} is ${total_change}.")
+
+                            wrong_second_input = False
+                        else:
+                            print("Please enter correctly.")
+                    
+                    wrong_input = False
+
                 else: # If the user input does not match any of the options
                     self.print_line()
                     print("Please enter correctly.")
