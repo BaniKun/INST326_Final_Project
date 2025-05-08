@@ -76,7 +76,7 @@ class User_Interface:
 
         while wrong_input:
             self.print_line()
-            print("What would you like to do?\n - Add Income\n - Add Expense\n - Calculate\n - Check\n - Save Calendar\n - Quit")
+            print("What would you like to do?\n - Add Income\n - Add Expense\n - Calculate Daily Budget\n - Check\n - Save Calendar\n - Quit")
             user_input = input()
             if user_input.casefold() == "Add Income".casefold(): # If the user chooses to add income to the calendar
                 self.add_income_prompt()
@@ -84,7 +84,7 @@ class User_Interface:
             elif user_input.casefold() == "Add Expense".casefold(): # If the user chooses to add expense to the calendar
                 self.add_expense_prompt()
                 wrong_input = False
-            elif user_input.casefold() == "Calculate".casefold(): # If the user chooses to calculate funds on the calendar
+            elif user_input.casefold() == "Calculate Daily Budget".casefold(): # If the user chooses to calculate daily recommended budget on the calendar
                 self.calculate_prompt()
                 wrong_input = False
             elif user_input.casefold() == "Check".casefold(): # If the user chooses to check funds on the calendar
