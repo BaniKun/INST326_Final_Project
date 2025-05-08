@@ -279,21 +279,34 @@ class User_Interface:
     
     def check_prompt(self):
         self.print_line()
-        wrong_input = True
+        additional_log = True
+        while additional_log:
+            wrong_input = True
 
-        while wrong_input:
-            self.print_line()
-            print("What would you like to do?\n - ")
-            user_input = input()
-            if user_input.casefold() == "Add Income".casefold(): 
-                self.add_income_prompt()
-                wrong_input = False
-            elif user_input.casefold() == "Add Expense".casefold(): 
-                self.add_expense_prompt()
-                wrong_input = False
-            else: # If the user input does not match any of the options
+            while wrong_input:
                 self.print_line()
-                print("Please enter correctly.")
+                print("What would you like to do?\n - ")
+                user_input = input()
+                if user_input.casefold() == "Add Income".casefold(): 
+                    self.add_income_prompt()
+                    wrong_input = False
+                elif user_input.casefold() == "Add Expense".casefold(): 
+                    self.add_expense_prompt()
+                    wrong_input = False
+                else: # If the user input does not match any of the options
+                    self.print_line()
+                    print("Please enter correctly.")
+        
+            wrong_input = True
+            while wrong_input:
+                one_more = input("Would you like to add another expense? (Yes/No)\n")
+                if one_more.casefold() == "No".casefold():
+                    wrong_input = False
+                    additional_log = False
+                elif one_more.casefold() == "Yes".casefold():
+                    wrong_input = False
+                else:
+                    print("Please type either yes or no.") 
 
 if __name__ == "__main__":
     launch = User_Interface()
