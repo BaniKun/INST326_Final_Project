@@ -50,6 +50,8 @@ class User_Interface:
         filename += ".pkl"
         with open(filename, 'wb') as file:
             pickle.dump(self.calendar, file)
+        
+        self.main_menu()
 
     def load_calendar(self):
         wrong_input = True
