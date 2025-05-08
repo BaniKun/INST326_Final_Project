@@ -226,7 +226,7 @@ class User_Interface:
         
             wrong_input = True
             while wrong_input:
-                one_more = input("Would you like to add another expense? (Yes/No)\n")
+                one_more = input("Would you like to add another income? (Yes/No)\n")
                 if one_more.casefold() == "No".casefold():
                     wrong_input = False
                     additional_log = False
@@ -268,7 +268,7 @@ class User_Interface:
 
             wrong_input = True
             while wrong_input:
-                one_more = input("Would you like to add another expense? (Yes/No)\n")
+                one_more = input("Would you like to calculate daily recommended budget for other dates? (Yes/No)\n")
                 if one_more.casefold() == "No".casefold():
                     wrong_input = False
                     additional_log = False
@@ -451,7 +451,7 @@ class User_Interface:
         
             wrong_input = True
             while wrong_input:
-                one_more = input("Would you like to add another expense? (Yes/No)\n")
+                one_more = input("Would you like to check for more dates? (Yes/No)\n")
                 if one_more.casefold() == "No".casefold():
                     wrong_input = False
                     additional_log = False
