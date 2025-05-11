@@ -2,7 +2,6 @@ import calendar as cl
 import datetime as dt
 import math
 import decimal
-import pickle
 
 def truncate_to_hundredths(number):
   return math.floor(number * 100) / 100
