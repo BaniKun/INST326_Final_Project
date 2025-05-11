@@ -196,27 +196,6 @@ class Budget_Calendar:
         
         return truncate_to_hundredths(total_fund / num_of_days)
 
-
-# Test functions for saveing and loading
-def save_calendar(calendar):
-    filename = input("Enter the filename you want to save your calendar as: ")
-    filename += ".pkl"
-    with open(filename, 'wb') as file:
-        pickle.dump(calendar, file)
-
-def load_calendar():
-    wrong_input = True
-    while wrong_input:
-        filename = input("Enter the filename of the calendar that you want to open: ")
-        if filename[-4:] != ".pkl":
-            print("Please enter the filename correctly.")
-        else:
-            wrong_input = False
-    with open(filename, 'rb') as file:
-        calendar = pickle.load(file)
-        print("Calendar loaded successfully.")
-        return calendar
-
 class Expenditure:
     """Class for all expenditure of the user
 

@@ -4,47 +4,63 @@ import pickle
 import datetime as dt
 
 class User_Interface:
+    """A class for user interface where the user get to interact with the budget calendar
+
+    Attributes:
+        year (int): The year the calendar will be set
+        calendar (budget calendar object): the budget calendar object where the user can interact with
+    """
     def __init__(self):
+        """Initializes the user interface
+
+        Side Effects:
+            Loads a saved calendar if user says yes or creates a new one based on the year input by the user and starts the main menu
+        """
         self.print_line()
         print("Welcome to your Budget Calendar!")
 
-        wrong_input = True
-        while wrong_input:
-            self.print_line()
-            print("Would you like to load a existing calendar? (Yes/No)")
+        wrong_input = True # Checks for correct input from the user on the first prompt
+        while wrong_input: # Repeats as long as the user puts in an unaccepted input
+            self.print_line() 
+            print("Would you like to load a existing calendar? (Yes/No)") # First prompt
             user_input = input()
-            if user_input.casefold() == "Yes".casefold():
-                self.load_calendar()
-                wrong_input = False
-            elif user_input.casefold() == "No".casefold():
-                wrong_second_input = True
-                while wrong_second_input:
+            if user_input.casefold() == "Yes".casefold(): # Case where the user wants to load a calendar
+                self.load_calendar() # Calls for method that loads in a pre-saved calendar and saves it to the calendar attribute
+                wrong_input = False # Breaks free of the first while loop
+            elif user_input.casefold() == "No".casefold(): # Case where the user wants to create a new calendar
+                wrong_second_input = True # Checks for correct input from the user on the second prompt
+                while wrong_second_input: # Repeats as long as the user puts in an unaccepted input 
                     self.print_line()
-                    print("What year would you like to make a calendar for?")
+                    print("What year would you like to make a calendar for?") # Second prompt
                     try: 
-                        self.year = int(input())
-                        self.calendar = classes.Budget_Calendar(self.year)
-                        wrong_second_input = False
-                    except:
+                        self.year = int(input()) # Saves the year of the calendar as an attribute
+                        self.calendar = classes.Budget_Calendar(self.year) # Creates a new budget calendar object and saves it to the calendar attribute
+                        wrong_second_input = False # Breaks free of the second while loop
+                    except: # Catches any instance where the user does not input accepted year for the second prompt
                         self.print_line()
                         print("Please input the year in numbers.")
                     
-                    wrong_input = False
-            else:
+                    wrong_input = False # Breaks free of the first while loop
+            else: # Case where the user inputs an unaccepted input for the first prompt
                 self.print_line()
                 print("Please enter either yes or no.")
         
-        self.main_menu()
+        self.main_menu() # Calls the main menu method 
 
     def print_line(self):
-        """A method that prints out a dash line
+        """A method that prints out a dash line, for our sanity
 
         Side Effect:
-            Prints out a line with 60 dashes :')
+            Prints out a line with 60 dashes
         """
         print("------------------------------------------------------------")        
     
     def save_calendar(self):
+        """A method that saves the calendar attribute as a pickle file so that user can load it up later
+
+        Side Effect:
+            Calls the main menu once the calendar is saved
+        """
         self.print_line()
         filename = input("Enter the filename you want to save your calendar as: ")
         filename += ".pkl"
@@ -54,16 +70,18 @@ class User_Interface:
         self.main_menu()
 
     def load_calendar(self):
-        wrong_input = True
-        while wrong_input:
+        """A method that loads a pre-saved calendar with the filename that user inputs 
+        """
+        wrong_input = True # Checks for correct input from the user 
+        while wrong_input: # Repeats as long as the user puts in an unaccepted input
             self.print_line()
             filename = input("Enter the filename of the calendar that you want to open: ")
-            try:
+            try: # Tries to open a pickle file with the name that the user inputs
                 with open(filename, 'rb') as file:
                     self.calendar = pickle.load(file)
                 print("Calendar loaded successfully.")
-                wrong_input = False
-            except:
+                wrong_input = False # Breaks free from the while loop
+            except: # Cathces any instance where the filename user input is incorrect
                 print("Please enter the correct filename.")
 
         
@@ -74,11 +92,11 @@ class User_Interface:
         Side Effect:
             Prompts the user between adding income or expense, or run a calculation on the Calendar.
         """
-        wrong_input = True
+        wrong_input = True # Checks for correct input from the user 
 
-        while wrong_input:
+        while wrong_input: # Repeats as long as the user puts in an unaccepted input
             self.print_line()
-            print("What would you like to do?\n - Add Income\n - Add Expense\n - Calculate Daily Budget\n - Check\n - Save Calendar\n - Quit")
+            print("What would you like to do?\n - Add Income\n - Add Expense\n - Calculate Daily Budget\n - Check\n - Save Calendar\n - Quit") # Prints out all the options / Add the option here if you add another option underneath / Quit should always be the last option
             user_input = input()
             if user_input.casefold() == "Add Income".casefold(): # If the user chooses to add income to the calendar
                 self.add_income_prompt()
@@ -103,76 +121,95 @@ class User_Interface:
 
     
     def add_expense_prompt(self):
-        additional_log = True
-        while additional_log:
+        """Method that adds an expense object to the calendar attribute
+
+        Side Effects:
+            Depending on the user input, it adds either a single or fixed expense object to the calendar.
+            Allows the user to input additional expenses if the user chooses to.
+            Calls the main menu after it's finished.
+        """
+        additional_log = True # Checks if the user wishes to input additional expenses
+        while additional_log: 
             self.print_line()
-            wrong_input = True
+            wrong_input = True # Fail-safe for first prompt
             while wrong_input:
-                print("Would you like to add a single expense or a fixed expense? (single/fixed)")
+                print("Would you like to add a single expense or a fixed expense? (single/fixed)") # First prompt
                 user_input = input()
-                if user_input.casefold() == "single".casefold():
+                if user_input.casefold() == "single".casefold(): # Case where the user chooses to log a single expense
                     description = input("Describe your expense. (i.e. Mcdonalds)\n")
-                    wrong_date_input = True
+                    wrong_date_input = True # Checks for wrong input for the date
                     while wrong_date_input:
-                        try:
+                        try: # Tries to make a date object based on the user's input
                             date_input = input("When was this expense made?(Input in MM/DD/YYYY format)\n")
                             date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
-                            wrong_date_input = False
-                        except:
+                            wrong_date_input = False # Breaks free from the while loop if the input is correct
+                        except: # Catches any instance where the user input couldn't be made into a date object
                             print("Please input the date correctly.")
+
                     amount = input("How much did you spend?\n")
                     expense_type = "not fixed"
                     category = input("What category does it fall into? (i.e. Food, Hobby, etc)\n")
 
-                    new_expense = classes.Expenditure(description, amount, expense_type, category)
+                    new_expense = classes.Expenditure(description, amount, expense_type, category) # Makes an expense object based on user input
 
-                    self.calendar.add_expenditure(date, new_expense)
-                    wrong_input = False
+                    self.calendar.add_expenditure(date, new_expense) # Adds the expense object to the calendar attribute
+                    wrong_input = False # Breaks free of the while loop for first prompt
                 
-                elif user_input.casefold() == "fixed".casefold():
+                elif user_input.casefold() == "fixed".casefold(): # Case where the user chooses to log a fixed expense (or a subscription)
                     description = input("Describe your expense. (i.e. Mcdonalds)\n")
-                    wrong_date_input = True
+
+                    wrong_date_input = True # Checks for wrong input for the date
                     while wrong_date_input:
-                        try:
+                        try: # Tries to make a date object based on the user's input
                             date_input = input("When was this expense made for the first time? (Input in MM/DD/YYYY format)\n")
                             date = dt.date(int(date_input.split("/")[2]), int(date_input.split("/")[0]), int(date_input.split("/")[1]))
-                            wrong_date_input = False
-                        except:
+                            wrong_date_input = False # Breaks free from the while loop if the input is correct
+                        except: # Catches any instance where the user input couldn't be made into a date object
                             print("Please input the date correctly.")
+
                     amount = input("How much is each payment?\n")
-                    wrong_frequence_input = True
+
+                    wrong_frequence_input = True # Checks wrong input for second prompt
                     while wrong_frequence_input:
-                        frequence = input("How often do you make this payment? (monthly/yearly)\n")
-                        if frequence.casefold() == "yearly".casefold() or "monthly".casefold():
+                        frequence = input("How often do you make this payment? (monthly/yearly)\n") # Second prompt
+                        if frequence.casefold() == "yearly".casefold() or "monthly".casefold(): 
                             expense_type = frequence
-                            wrong_frequence_input = False
-                        else:
+                            wrong_frequence_input = False # Breaks free of the while loop that checks for the second prompt
+                        else: # Case where the user input is incorrect
                             print("Please input the frequence correctly.")
+
                     category = input("What category does it fall into? (i.e. Food, Hobby, etc)\n")
 
-                    new_expense = classes.Expenditure(description, amount, expense_type, category)
+                    new_expense = classes.Expenditure(description, amount, expense_type, category) # Creates a expense object based on user input
 
-                    self.calendar.add_fixed_expenditure(date, new_expense)
-                    wrong_input = False
+                    self.calendar.add_fixed_expenditure(date, new_expense) # Adds a fixed expense to the calendar attribute
+                    wrong_input = False # Breaks free from the while loop that checks for the first prompt
                 
-                else:
+                else: # Case where the user puts in unaccepted input for the first prompt
                     print("Please type in either single or fixed.")
             
-            wrong_input = True
+            wrong_input = True # Chacks for the wrong input for the third prompt
             while wrong_input:
-                one_more = input("Would you like to add another expense? (Yes/No)\n")
-                if one_more.casefold() == "No".casefold():
-                    wrong_input = False
-                    additional_log = False
-                elif one_more.casefold() == "Yes".casefold():
-                    wrong_input = False
-                else:
+                one_more = input("Would you like to add another expense? (Yes/No)\n") # Third prompt
+                if one_more.casefold() == "No".casefold(): # Case where the user chooses not to log additional expenses
+                    wrong_input = False # Breaking free from the while loop that checks for the third prompt
+                    additional_log = False # Breaking free from the while loop that checks for additional logs
+                elif one_more.casefold() == "Yes".casefold(): # Case where the user chooses to log additional expenses
+                    wrong_input = False # Breaking free from the while loop that checks for the third prompt
+                else: # Case where the user puts in wrong input for the third prompt
                     print("Please type either yes or no.")
         
-        self.main_menu()
+        self.main_menu() # Calls the main menu method after breaking free from the while loop that checks for additional logs
 
 
     def add_income_prompt(self):
+        """Method that adds an income object to the calendar attribute
+
+        Side Effects:
+            Depending on the user input, it adds either a single or fixed income object to the calendar.
+            Allows the user to input additional incomes if the user chooses to.
+            Calls the main menu after it's finished.
+        """
         additional_log = True
         while additional_log:
             self.print_line()
@@ -240,6 +277,13 @@ class User_Interface:
         self.main_menu()
 
     def calculate_prompt(self):
+        """Method that calculates the recommended daily budget for each day between two dates that the user chooses
+
+        Side Effect:
+            Prints out the result message.
+            User can calculate it again for different time period if the user chooses to.
+            Calls the main menu method once it's finished
+        """
         additional_log = True
         while additional_log:
             self.print_line()
@@ -282,6 +326,8 @@ class User_Interface:
         self.main_menu()   
     
     def check_prompt(self):
+        """
+        """
         self.print_line()
         additional_log = True
         while additional_log:
