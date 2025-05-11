@@ -326,7 +326,12 @@ class User_Interface:
         self.main_menu()   
     
     def check_prompt(self):
-        """
+        """Method that checks for incomes, expenses, or change in fund depending on the user input
+
+        Side Effect:
+            Prints out the results.
+            Allows user to repeat the process if the user chooses to.
+            Calls the main menu method once it finishes.
         """
         self.print_line()
         additional_log = True
@@ -337,14 +342,14 @@ class User_Interface:
                 self.print_line()
                 print("What would you like to do?\n - Check Expense\n - Check Income\n - Check Change in Funds")
                 user_input = input()
-                if user_input.casefold() == "check expense".casefold(): 
+                if user_input.casefold() == "check expense".casefold(): # Case where user chooses to check for expense
                     self.print_line()
 
                     wrong_second_input = True
                     while wrong_second_input:
                         print("Would you like to check expense on a single date or between two dates? (Single/Two Dates)")
                         user_second_input = input()
-                        if user_second_input.casefold() == "Single".casefold():
+                        if user_second_input.casefold() == "Single".casefold(): # Case where user chooses to check for expense on a single date
                             self.print_line()
 
                             wrong_date_input = True
@@ -360,7 +365,7 @@ class User_Interface:
                             print(f"On {check_date}, you've spent total of ${total_spent}.")
 
                             wrong_second_input = False
-                        elif user_second_input.casefold() == "Two Dates".casefold():
+                        elif user_second_input.casefold() == "Two Dates".casefold(): # Case where user chooses to check for expense between two dates
                             self.print_line()
 
                             wrong_date_input = True
@@ -385,18 +390,18 @@ class User_Interface:
                             print(f"Your total spending between {start_date} and {end_date} is ${total_spent}.")
 
                             wrong_second_input = False
-                        else:
+                        else: # Case where the user puts in wrong input
                             print("Please enter correctly.")
 
                     wrong_input = False
-                elif user_input.casefold() == "Check Income".casefold(): 
+                elif user_input.casefold() == "Check Income".casefold(): # Case where the user chooses to check for income
                     self.print_line()
 
                     wrong_second_input = True
                     while wrong_second_input:
                         print("Would you like to check income on a single date or between two dates? (Single/Two Dates)")
                         user_second_input = input()
-                        if user_second_input.casefold() == "Single".casefold():
+                        if user_second_input.casefold() == "Single".casefold(): # Case where the user chooses to check for income on a single date
                             self.print_line()
 
                             wrong_date_input = True
@@ -412,7 +417,7 @@ class User_Interface:
                             print(f"On {check_date}, you've gained total of ${total_gained}.")
 
                             wrong_second_input = False
-                        elif user_second_input.casefold() == "Two Dates".casefold():
+                        elif user_second_input.casefold() == "Two Dates".casefold(): # Case where the suer chooses to check for income between two dates
                             self.print_line()
 
                             wrong_date_input = True
@@ -437,19 +442,19 @@ class User_Interface:
                             print(f"Your total income between {start_date} and {end_date} is ${total_gained}.")
 
                             wrong_second_input = False
-                        else:
+                        else: # Case where the user inputs incorrectly
                             print("Please enter correctly.")
                     
                     wrong_input = False
                 
-                elif user_input.casefold() == "Check Total change in funds".casefold(): 
+                elif user_input.casefold() == "Check Total change in funds".casefold(): # Case where the user chooses to check for total change in fund
                     self.print_line()
 
                     wrong_second_input = True
                     while wrong_second_input:
                         print("Would you like to check total change in funds on a single date or between two dates? (Single/Two Dates)")
                         user_second_input = input()
-                        if user_second_input.casefold() == "Single".casefold():
+                        if user_second_input.casefold() == "Single".casefold(): # Case where the user chooses to check for total change in fund on a single date
                             self.print_line()
 
                             wrong_date_input = True
@@ -465,7 +470,7 @@ class User_Interface:
                             print(f"On {check_date}, you've gained total of ${total_change}.")
 
                             wrong_second_input = False
-                        elif user_second_input.casefold() == "Two Dates".casefold():
+                        elif user_second_input.casefold() == "Two Dates".casefold(): # Case where the user chooses to check for total change in fund between two dates
                             self.print_line()
 
                             wrong_date_input = True
@@ -490,7 +495,7 @@ class User_Interface:
                             print(f"Your total change in funds between {start_date} and {end_date} is ${total_change}.")
 
                             wrong_second_input = False
-                        else:
+                        else: # Case where the user puts in wrong input
                             print("Please enter correctly.")
                     
                     wrong_input = False
