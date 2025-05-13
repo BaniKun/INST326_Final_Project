@@ -4,7 +4,7 @@ import datetime as dt
 
 from classes import Budget_Calendar, Expenditure, Income
 
-#sns.set(style="whitegrid")
+#sns.set(style="whitegrid", font="sans-serif")
 
 class BudgetVisualizer:
     """A class to create a few different visualizations from a Budget_Calendar object.
@@ -94,28 +94,38 @@ if __name__ == "__main__":
     
     sample_date1 = dt.date(2025, 5, 12)
     sample_date2 = dt.date(2025, 5, 20)
+    sample_date3 = dt.date(2025, 5, 1)
+    sample_date4 = dt.date(2025, 5, 31)
     
     exp1 = Expenditure("Groceries", 150.75, "variable", "Food")
     exp2 = Expenditure("Gym Membership", 50.00, "fixed", "Health")
+    exp3 = Expenditure("Snack Run", 15.45, "variable", "Food")
+    exp4 = Expenditure("Rent", 1290.00, "fixed", "Housing")
+
     inc1 = Income("Salary", 2000.00, "fixed")
     inc2 = Income("Freelance", 200.00, "variable")
+    inc3 = Income("Clothes Sale", 45.00, "variable")
+    inc4 = Income("Financial Aid Refund", 2200.00, "variable")
     
     # Populate the calendar with sample data.
-    budget_calendar.add_expenditure(sample_date1, exp1)
+    budget_calendar.add_expenditure(sample_date3, exp4)
     budget_calendar.add_expenditure(sample_date1, exp2)
+    budget_calendar.add_expenditure(sample_date2, exp3)
+    budget_calendar.add_expenditure(sample_date4, exp1)
+
     budget_calendar.add_income(sample_date1, inc1)
-    
-    budget_calendar.add_expenditure(sample_date2, exp1)
     budget_calendar.add_income(sample_date2, inc2)
+    budget_calendar.add_income(sample_date3, inc3)
+    budget_calendar.add_income(sample_date4, inc4)
     
     # Initialize the visualizer with the budget calendar.
     visualizer = BudgetVisualizer(budget_calendar)
     
     # Visualization 1: Plot daily spending for two days.
-    visualizer.plot_daily_spending(sample_date1, sample_date2)
+    visualizer.plot_daily_spending(sample_date3, sample_date4)
     
     # Visualization 2: Plot daily income for two days.
-    visualizer.plot_daily_income(sample_date1, sample_date2)
+    visualizer.plot_daily_income(sample_date3, sample_date4)
     
     # Visualization 3: Show a pie chart of expenditure categories.
     visualizer.plot_expenditure_category_distribution()

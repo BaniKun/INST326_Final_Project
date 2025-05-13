@@ -46,7 +46,7 @@ class Budget_Calendar:
 
 
     def add_fixed_expenditure(self, date, spending, pays_every):
-        """Adds an reoccurring Expenditure object to corresponding dates
+        """Adds a reoccurring Expenditure object to corresponding dates
 
         Args:
             date (Date object): Date the expense was first made
