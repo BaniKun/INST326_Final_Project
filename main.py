@@ -257,7 +257,7 @@ class User_Interface:
 
                     new_income = classes.Income(description, amount, income_type)
 
-                    self.calendar.add_fixed_income(date, new_income)
+                    self.calendar.add_fixed_income(date, new_income, frequence)
                     wrong_input = False
 
                 else:
