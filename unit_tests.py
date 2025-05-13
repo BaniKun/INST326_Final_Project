@@ -3,11 +3,12 @@ import datetime as dt
 import calendar as cl   
 import pickle            
 from decimal import Decimal
-
+from unittest.mock import patch, MagicMock
 
 from classes import Budget_Calendar, Expenditure, Income
 from classes import Expenditure
 from classes import Income
+from main import User_Interface
 
 # Fixture that creates a Budget_Calendar for 2025.
 @pytest.fixture
@@ -105,3 +106,30 @@ def test_expenditure_repr():
     expected_repr = "Spotify Membership\nAmount: 11.99$\nType: fixed\nCategory: Leisure"
     
     assert repr(exp) == expected_repr
+
+
+#Test block for Income class
+def test_income_creation():
+    """Tests creating a new income entry and if all attributes are correct"""
+    income = Income("Babysitting", 150.00, "variable")
+    
+    assert income.description == "Babysitting"
+    assert income.amount == Decimal(150.00)
+    assert income.type == "variable"
+
+def test_income_decima_conv():
+    """Tests if amount is correctly converted to decimal"""
+    income = Income("Birthday Money", "150.00", "variable")
+
+    assert isinstance(income.amount, Decimal)
+    assert income.amount == Decimal("150.00")
+
+def test_income_repr(): 
+    """Tests if the repr is formatting correctly""" 
+    income = Income("Tutoring Job", 50.00, "fixed") 
+    expected_repr = f"Tutoring Job\nAmount: {income.amount}$\nType: fixed" 
+
+    assert repr(income) == expected_repr
+
+
+#Test block for main document
