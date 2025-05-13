@@ -182,7 +182,7 @@ class User_Interface:
 
                     new_expense = classes.Expenditure(description, amount, expense_type, category) # Creates a expense object based on user input
 
-                    self.calendar.add_fixed_expenditure(date, new_expense) # Adds a fixed expense to the calendar attribute
+                    self.calendar.add_fixed_expenditure(date, new_expense, frequence) # Adds a fixed expense to the calendar attribute
                     wrong_input = False # Breaks free from the while loop that checks for the first prompt
                 
                 else: # Case where the user puts in unaccepted input for the first prompt
