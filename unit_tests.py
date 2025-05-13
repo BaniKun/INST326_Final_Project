@@ -3,9 +3,13 @@ import pytest
 import calendar as cl   
 import pickle            
 from decimal import Decimal
-from classes import Budget_Calendar, Expenditure, Income
 
-# Fixture that provides a Budget_Calendar for 2025.
+
+from classes import Budget_Calendar, Expenditure, Income
+from classes import Expenditure
+from classes import Income
+
+# Fixture that creates a Budget_Calendar for 2025.
 @pytest.fixture
 def budget_calendar():
     return Budget_Calendar(2025)
@@ -77,3 +81,27 @@ def test_get_daily_change_in_fund(budget_calendar):
     daily_change = budget_calendar.get_daily_change_in_fund(date)
     
     assert daily_change == Decimal("2070.00")
+
+
+#Test block for Expenditure class
+def test_expenditure_creation():
+    """Tests creating a new expense and if all aspects of the expense are initiated correctly"""
+    exp = Expenditure("Gym Membership", Decimal(45.00), "fixed", "Hobby")
+
+    assert exp.description == "Gym Membership"
+    assert exp.amount == Decimal("45.00")
+    assert exp.type == "fixed"
+    assert exp.category == "Hobby"
+
+def test_expenditure_decimal_conversion():
+    exp = Expenditure("Health Insurance", "125.50", "fixed", "Health")
+
+    assert isinstance(exp.amount, Decimal)
+    assert exp.amount == Decimal("125.50")
+
+def test_expenditure_repr():
+    """Tests the repr"""
+    exp = Expenditure("Spotify Membership", 11.99, "fixed", "Leisure")
+    expected_repr = "Spotify Membership\nAmount: 11.99$\nType: fixed\nCategory: Leisure"
+    
+    assert repr(exp) == expected_repr
