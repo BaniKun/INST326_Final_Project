@@ -2,7 +2,6 @@ import calendar as cl
 import datetime as dt
 import math
 import decimal
-import pickle
 
 def truncate_to_hundredths(number):
   return math.floor(number * 100) / 100
@@ -22,6 +21,7 @@ class Budget_Calendar:
         cal = cl.Calendar()
         yearly_expense_calendar = {}
         yearly_income_calendar = {}
+        self.year = year
         for month in range(1, 13):
             for day in cal.itermonthdates(year, month):
                 if day.year == year:
@@ -56,7 +56,7 @@ class Budget_Calendar:
         Side Effect:
             Adds the Expenditure object into the list which is the value for corresponding Date keys in the self.expense_calendar dictionary
         """
-        if pays_every == "yearly": # Yearly Payment
+        if pays_every.casefold() == "yearly".casefold(): # Yearly Payment
             self.add_expenditure(date, spending)
         else: # Monthly Payment
             for new_month in range(date.month, 13): # Adds payment to same day of every month starting from the passed in date
@@ -121,7 +121,7 @@ class Budget_Calendar:
         Side Effect:
             Adds the Income object into the list which is the value for corresponding Date keys in the self.income_calendar dictionary
         """
-        if paid_every == "yearly": # Yearly Income
+        if paid_every.casefold() == "yearly".casefold(): # Yearly Income
             self.add_income(date, income)
         else: # Monthly Income
             for new_month in range(date.month, 13): # Adds income to same day of every month starting from the passed in date
@@ -188,26 +188,12 @@ class Budget_Calendar:
         total = self.get_total_income_amount_between_two_dates(starting_date, end_date) - self.get_total_spending_amount_between_two_dates(starting_date, end_date)
         
         return total
-
-# Test functions for saveing and loading
-def save_calendar(calendar):
-    filename = input("Enter the filename you want to save your calendar as: ")
-    filename += ".pkl"
-    with open(filename, 'wb') as file:
-        pickle.dump(calendar, file)
-
-def load_calendar():
-    wrong_input = True
-    while wrong_input:
-        filename = input("Enter the filename of the calendar that you want to open: ")
-        if filename[-4:] != ".pkl":
-            print("Please enter the filename correctly.")
-        else:
-            wrong_input = False
-    with open(filename, 'rb') as file:
-        calendar = pickle.load(file)
-        print("Calendar loaded successfully.")
-        return calendar
+    
+    def get_recommended_daily_budget(self, starting_date, end_date):
+        total_fund = self.get_total_fund_left_between_two_dates(dt.date(self.year,1,1), end_date)
+        num_of_days = abs((end_date - starting_date).days) + 1
+        
+        return truncate_to_hundredths(total_fund / num_of_days)
 
 class Expenditure:
     """Class for all expenditure of the user
@@ -243,40 +229,3 @@ class Income:
     def __repr__(self):
         return f"{self.description}\nAmount: {self.amount}$\nType: {self.type}"
 
-if __name__ == "__main__":
-    myBudget_Calendar = Budget_Calendar(2025)
-    print("Expenditure Test")
-    myBudget_Calendar.add_expenditure(dt.date(2025,4,22), Expenditure("Spotify", 9.99, "Fixed", "Music"))
-    myBudget_Calendar.add_expenditure(dt.date(2025,4,22), Expenditure("Spotify", 20.99, "Fixed", "Music"))
-    myBudget_Calendar.add_expenditure(dt.date(2025,4,23), Expenditure("Spotify", 30.99, "Fixed", "Music"))
-    print(myBudget_Calendar.get_daily_spending_amount(dt.date(2025,4,22)))
-    print(myBudget_Calendar.get_daily_spending_amount(dt.date(2025,4,23)))
-    print(myBudget_Calendar.get_total_spending_amount_between_two_dates(dt.date(2025,4,22), dt.date(2025,4,23)))
-    myBudget_Calendar.add_fixed_expenditure(dt.date(2025,4,25), Expenditure("Spotify", 9.99, "Fixed", "Music"), "monthly")
-    print(myBudget_Calendar.get_daily_spending_amount(dt.date(2025,4,25)))
-    print(myBudget_Calendar.get_daily_spending_amount(dt.date(2025,5,25)))
-    print(myBudget_Calendar.get_daily_spending_amount(dt.date(2025,12,25)))
-    print(myBudget_Calendar.get_total_spending_amount_between_two_dates(dt.date(2025,4,25), dt.date(2025,5,25)))
-
-    print("Income Test")
-    myBudget_Calendar.add_income(dt.date(2025,4,22), Income("Pocket Money", 10.0, "Not Fixed"))
-    myBudget_Calendar.add_income(dt.date(2025,4,22), Income("Pocket Money", 100.0, "Not Fixed"))
-    myBudget_Calendar.add_income(dt.date(2025,4,23), Income("Pocket Money", 10.0, "Not Fixed"))
-    print(myBudget_Calendar.get_daily_income_amount(dt.date(2025,4,22)))
-    print(myBudget_Calendar.get_daily_income_amount(dt.date(2025,4,23)))
-    print(myBudget_Calendar.get_total_income_amount_between_two_dates(dt.date(2025,4,22), dt.date(2025,4,23)))
-    myBudget_Calendar.add_fixed_income(dt.date(2025,4,25), Income("Pocket Money", 10.0, "Fixed"), "monthly")
-    print(myBudget_Calendar.get_daily_income_amount(dt.date(2025,4,25)))
-    print(myBudget_Calendar.get_daily_income_amount(dt.date(2025,5,25)))
-    print(myBudget_Calendar.get_daily_income_amount(dt.date(2025,12,25)))
-    print(myBudget_Calendar.get_total_income_amount_between_two_dates(dt.date(2025,4,25), dt.date(2025,5,25)))
-
-    print("Fund Test")
-    print(myBudget_Calendar.get_daily_change_in_fund(dt.date(2025,4,23)))
-    print(myBudget_Calendar.get_total_fund_left_between_two_dates(dt.date(2025,4,22), dt.date(2025,4,23)))
-
-    print("save test")
-    save_calendar(myBudget_Calendar)
-    newCalendar = load_calendar()
-    print(newCalendar.get_daily_income_amount(dt.date(2025,4,22)))
-    print(newCalendar.get_total_fund_left_between_two_dates(dt.date(2025,4,22), dt.date(2025,4,23)))
