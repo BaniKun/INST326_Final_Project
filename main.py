@@ -447,7 +447,7 @@ class User_Interface:
                     
                     wrong_input = False
                 
-                elif user_input.casefold() == "Check Total change in funds".casefold(): # Case where the user chooses to check for total change in fund
+                elif user_input.casefold() == "Check change in funds".casefold(): # Case where the user chooses to check for total change in fund
                     self.print_line()
 
                     wrong_second_input = True
