@@ -6,8 +6,6 @@ from decimal import Decimal
 from unittest.mock import patch, MagicMock
 
 from classes import Budget_Calendar, Expenditure, Income
-from classes import Expenditure
-from classes import Income
 from main import User_Interface
 
 # Fixture that creates a Budget_Calendar for 2025.

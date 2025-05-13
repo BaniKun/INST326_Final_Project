@@ -1,28 +1,121 @@
 import matplotlib.pyplot as plt
-import classes
+#import seaborn as sns
+import datetime as dt
 
-def visualize(self):
-        budget_data = self.calculate_split()
-        remaining_budget = budget_data["Remaining Budget"]
-    
-        categories = list(self.spend_categories.keys())  + list(self.fixed_expenses.keys()) + ["Remaining Budget"]
-        percentages = list(self.spend_categories.values()) + list(self.fixed_expenses.values()) + [remaining_budget]
+from classes import Budget_Calendar, Expenditure, Income
 
-        plt.figure(figsize=(8,8))
-        colors = ['#9A133DFF', '#B93961FF', '#D8527CFF', '#F28AAAFF', '#F9B4C9FF', '#F9E0E8FF', '#FFFFFFFF', '#EAF3FFFF', '#C5DAF6FF', '#A1C2EDFF', '#6996E3FF', '#4060C8FF', '#1A318BFF']
-        #color palette from: https://python-graph-gallery.com/color-palette-finder/
-        plt.pie(percentages, labels=categories, colors=colors)
-        plt.title("Budget Allocation")
+#sns.set(style="whitegrid")
+
+class BudgetVisualizer:
+    """A class to create a few different visualizations from a Budget_Calendar object.
+    Attributes: 
+        - budget (Budget_Calendar): The budget calendar containing the expense and income data.
+    """
+    def __init__(self, budget):
+        self.budget = budget
+
+    def plot_daily_spending(self, start_date, end_date):
+        """Creates a line plot of daily spending between the start and end dates.
+        Args:
+            - start_date (date): The start date.
+            - end_date (date): The end date.
+        """
+        current_date = start_date
+        dates, spending = [], []
+
+        while current_date <= end_date:
+            dates.append(current_date)
+            amount = self.budget.get_daily_spending_amount(current_date)
+            spending.append(float(amount))  
+            current_date += dt.timedelta(days=1)
+
+        plt.figure(figsize=(8, 4))
+        plt.plot(dates, spending, marker='o', linestyle='-', color='orchid')
+        plt.title(f"Daily Spending\n{start_date} to {end_date}")
+        plt.xlabel("Date")
+        plt.ylabel("Spending ($)")
+        plt.xticks(rotation=45)
+        plt.tight_layout()
         plt.show()
 
+    def plot_daily_income(self, start_date, end_date):
+        """
+        Creates a line plot of daily income between start_date and end_date.
+        
+        Args:
+            - start_date (date): The starting date
+            - end_date (date): The ending date
+        """
+        current_date = start_date
+        dates, income_values = [], []
+        
+        while current_date <= end_date:
+            dates.append(current_date)
+            amount = self.budget.get_daily_income_amount(current_date)
+            income_values.append(float(amount))
+            current_date += dt.timedelta(days=1)
+        
+        plt.figure(figsize=(8, 4))
+        plt.plot(dates, income_values, marker='o', linestyle='-', color='skyblue')
+        plt.title(f"Daily Income\n{start_date} to {end_date}")
+        plt.xlabel("Date")
+        plt.ylabel("Income ($)")
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        plt.show()
+
+    def plot_expenditure_category_distribution(self):
+        """Creates a pie chart showing the percentage distribution of expenditures by category"""
+        category_totals = {}
+
+        for date, expenditures in self.budget.expense_calendar.items():
+            for exp in expenditures:
+                category = exp.category
+                category_totals[category] =category_totals.get(category, 0) + float(exp.amount)
+        
+        if not category_totals:
+            print("No expenditure data available to plot.")
+            return
+        
+        categories = list(category_totals.keys())
+        amounts = list(category_totals.values())
+
+        color = 'pink', 'slateblue', 'mediumpurple', 'palevioletred', 'thistle', 'plum', 'honeydew', 'lightcoral', 'darkcyan'
+
+        plt.figure(figsize=(6, 6))
+        plt.pie(amounts, labels=categories, autopct='%1.1f%%', startangle=140, colors=color)
+        plt.title("Expenditure Distribution by Category")
+        plt.axis("equal") 
+        plt.show()
+
+
 if __name__ == "__main__":
-    budget = classes.Budget(2000)
-    budget.add_category("Rent", 40)
-    budget.add_category("Food", 20)
-    budget.set_fixed_expense("Insurance", 300)
-    budget.set_fixed_expense("Subscriptions", 100)
+    budget_calendar = Budget_Calendar(2025)
     
-    budget_summary = budget.calculate_split()
-    print(budget_summary)
+    sample_date1 = dt.date(2025, 5, 12)
+    sample_date2 = dt.date(2025, 5, 20)
     
-    budget.visualize()
+    exp1 = Expenditure("Groceries", 150.75, "variable", "Food")
+    exp2 = Expenditure("Gym Membership", 50.00, "fixed", "Health")
+    inc1 = Income("Salary", 2000.00, "fixed")
+    inc2 = Income("Freelance", 200.00, "variable")
+    
+    # Populate the calendar with sample data.
+    budget_calendar.add_expenditure(sample_date1, exp1)
+    budget_calendar.add_expenditure(sample_date1, exp2)
+    budget_calendar.add_income(sample_date1, inc1)
+    
+    budget_calendar.add_expenditure(sample_date2, exp1)
+    budget_calendar.add_income(sample_date2, inc2)
+    
+    # Initialize the visualizer with the budget calendar.
+    visualizer = BudgetVisualizer(budget_calendar)
+    
+    # Visualization 1: Plot daily spending for two days.
+    visualizer.plot_daily_spending(sample_date1, sample_date2)
+    
+    # Visualization 2: Plot daily income for two days.
+    visualizer.plot_daily_income(sample_date1, sample_date2)
+    
+    # Visualization 3: Show a pie chart of expenditure categories.
+    visualizer.plot_expenditure_category_distribution()
