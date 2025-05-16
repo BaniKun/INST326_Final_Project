@@ -1,10 +1,7 @@
 import matplotlib.pyplot as plt
-#import seaborn as sns
 import datetime as dt
 
 from classes import Budget_Calendar, Expenditure, Income
-
-#sns.set(style="whitegrid", font="sans-serif")
 
 class BudgetVisualizer:
     """A class to create a few different visualizations from a Budget_Calendar object.
