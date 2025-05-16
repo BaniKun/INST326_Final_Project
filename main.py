@@ -1,5 +1,6 @@
 # File for main function to run the app
 import classes
+from visualization import BudgetVisualizer
 import pickle
 import datetime as dt
 
@@ -333,6 +334,7 @@ class User_Interface:
             Allows user to repeat the process if the user chooses to.
             Calls the main menu method once it finishes.
         """
+        budget_visualizer = BudgetVisualizer(self.calendar)
         self.print_line()
         additional_log = True
         while additional_log:
@@ -388,6 +390,8 @@ class User_Interface:
 
                             total_spent = self.calendar.get_total_spending_amount_between_two_dates(start_date, end_date)
                             print(f"Your total spending between {start_date} and {end_date} is ${total_spent}.")
+                            budget_visualizer.plot_daily_spending(start_date, end_date)
+                            budget_visualizer.plot_expenditure_category_distribution()
 
                             wrong_second_input = False
                         else: # Case where the user puts in wrong input
@@ -440,6 +444,7 @@ class User_Interface:
 
                             total_gained = self.calendar.get_total_income_amount_between_two_dates(start_date, end_date)
                             print(f"Your total income between {start_date} and {end_date} is ${total_gained}.")
+                            budget_visualizer.plot_daily_income(start_date, end_date)
 
                             wrong_second_input = False
                         else: # Case where the user inputs incorrectly
