@@ -182,7 +182,7 @@ class User_Interface:
 
                     new_expense = classes.Expenditure(description, amount, expense_type, category) # Creates a expense object based on user input
 
-                    self.calendar.add_fixed_expenditure(date, new_expense) # Adds a fixed expense to the calendar attribute
+                    self.calendar.add_fixed_expenditure(date, new_expense, frequence) # Adds a fixed expense to the calendar attribute
                     wrong_input = False # Breaks free from the while loop that checks for the first prompt
                 
                 else: # Case where the user puts in unaccepted input for the first prompt
@@ -257,7 +257,7 @@ class User_Interface:
 
                     new_income = classes.Income(description, amount, income_type)
 
-                    self.calendar.add_fixed_income(date, new_income)
+                    self.calendar.add_fixed_income(date, new_income, frequence)
                     wrong_input = False
 
                 else:
@@ -447,7 +447,7 @@ class User_Interface:
                     
                     wrong_input = False
                 
-                elif user_input.casefold() == "Check Total change in funds".casefold(): # Case where the user chooses to check for total change in fund
+                elif user_input.casefold() == "Check change in funds".casefold(): # Case where the user chooses to check for total change in fund
                     self.print_line()
 
                     wrong_second_input = True
